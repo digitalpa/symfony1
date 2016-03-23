@@ -227,7 +227,25 @@ class sfI18N
    */
   public function __($string, $args = array(), $catalogue = 'messages')
   {
-    return $this->getMessageFormat()->format($string, $args, $catalogue);
+        $translated_string = $string;
+        $catalogueList = $this->getCatalogueList($catalogue);
+
+        foreach ($catalogueList as $cat) {
+            $translated_string = $this->getMessageFormat()->format($string, $args, $cat);
+            if ($translated_string != $string)
+                return $translated_string;
+        }
+
+//        $translated_string = $this->getMessageFormat()->format($string, $args, 'custom');
+//        if ($translated_string == $string) {
+//            $translated_string = $this->getMessageFormat()->format($string, $args, $catalogue);
+//        }
+//
+//        if ($translated_string == $string) {
+//            $translated_string = $this->getMessageFormat()->format($string, $args, 'messages');
+//        }
+
+        return $translated_string;
   }
 
   /**
@@ -431,5 +449,14 @@ class sfI18N
     // change message source directory to our module
     $this->setMessageSource($this->configuration->getI18NDirs($event['module']));
   }
+
+    private function getCatalogueList($catalogue)
+    {
+        $catalogueList = array('custom');
+        $catalogueList = array_merge($catalogueList, sfConfig::get('app_translation_catalogue_list', array()));
+        $catalogueList = array_merge($catalogueList, array($catalogue, 'messages'));
+
+        return $catalogueList;
+    }
 
 }

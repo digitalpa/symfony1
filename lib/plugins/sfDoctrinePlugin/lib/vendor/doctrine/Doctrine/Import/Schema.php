@@ -284,7 +284,13 @@ class Doctrine_Import_Schema
                 continue;
             }
             
+
+            if (!empty($definition['options']['symfony']['baseClassName'])) {
+                $builder->setOption('baseClassName', $definition['options']['symfony']['baseClassName']);
+            }
+            
             $builder->buildRecord($definition);
+            $builder->setOptions($this->getOptions());
         }
     }
 
