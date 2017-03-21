@@ -300,7 +300,6 @@ abstract class sfFormDoctrine extends sfFormObject
     {
       $values = $this->values;
     }
-
     if (isset($values[$field.'_delete']) && $values[$field.'_delete'])
     {
       $this->removeFile($field);
@@ -323,7 +322,7 @@ abstract class sfFormDoctrine extends sfFormObject
       return $values[$field];
     }
 
-    $this->removeFile($field);
+//    $this->removeFile($field);
 
     return $this->saveFile($field, $filename, $values[$field]);
   }
