@@ -70,10 +70,13 @@ class sfSessionStorage extends sfStorage
         $sessionName = $this->options['session_name'];
 
         session_name($sessionName);
+//        $sessionId = sfContext::getInstance()->getRequest()->getHttpHeader('session_token');
 
-        $sessionId = sfContext::getInstance()->getRequest()->getHttpHeader('session_token');
-        if ($sessionId) {
-            session_id($sessionId);
+        $sessionData = $this->getSessionData();
+
+        if ($sessionData) {
+            session_id($sessionData['session_id']);
+            session_name($sessionData['session_name']);
         } elseif (!(boolean)ini_get('session.use_cookies') && $sessionId = $this->options['session_id']) {
             session_id($sessionId);
         }
@@ -94,6 +97,30 @@ class sfSessionStorage extends sfStorage
             self::$sessionStarted = true;
         }
     }
+
+    private function getSessionData()
+    {
+        /** @var sfRequest $request */
+        $request = sfContext::getInstance()->getRequest();
+
+        if($request->getHttpHeader('session_token'))
+        {
+            return array(
+                'session_id' => $request->getHttpHeader('session_token'),
+                'session_name' => session_name($sessionName)
+            );
+        }
+        elseif ($request->hasParameter('session_id') && $request->hasParameter('session_name'))
+        {
+            return array(
+                'session_id' => $request->getParameter('session_id'),
+                'session_name' => $request->getParameter('session_name')
+            );
+        }
+
+        return null;
+    }
+
 
     /**
      * Reads data from this storage.
