@@ -44,6 +44,7 @@ abstract class sfWidgetForm extends sfWidget
     $this->addOption('needs_multipart', false);
     $this->addOption('default', null);
     $this->addOption('label', null);
+    $this->addOption('required', null);
 
     parent::__construct($options, $attributes);
   }
@@ -173,7 +174,9 @@ abstract class sfWidgetForm extends sfWidget
     }
 
     $attributes = $this->fixFormId($attributes);
-
+    if($this->getOption('required')){
+        $attributes['required']='required';
+    }
     return parent::renderTag($tag, $attributes);
   }
 
