@@ -175,7 +175,7 @@ abstract class sfWidgetForm extends sfWidget
 
     $attributes = $this->fixFormId($attributes);
     if($this->getOption('required')){
-        $attributes['required']='required';
+//        $attributes['required']='required';
     }
     return parent::renderTag($tag, $attributes);
   }
