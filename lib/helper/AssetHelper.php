@@ -130,7 +130,9 @@ function javascript_include_tag()
       unset($sourceOptions['raw_name']);
     }
 
-    $source .= '?'.sfConfig::get('app_js_version',time());
+
+    $char = (strpos($source,'?') === false) ? '?' : '&';
+    $source .= $char.sfConfig::get('app_js_version',time());
 
     $options = array_merge(array('type' => 'text/javascript', 'src' => $source), $sourceOptions);
     $tag = content_tag('script', '', $options);
