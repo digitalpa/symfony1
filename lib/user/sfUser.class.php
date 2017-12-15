@@ -319,4 +319,12 @@ class sfUser implements ArrayAccess
 
         return $event->getReturnValue();
     }
+
+    public function getBaseInformation(){
+        return [
+            'id' => $this->getId(),
+            'full_name' => $this->getFullName(),
+            'username' => $this->getUsername()
+        ];
+    }
 }
