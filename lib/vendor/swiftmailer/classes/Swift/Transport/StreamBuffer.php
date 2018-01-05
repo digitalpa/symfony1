@@ -260,6 +260,12 @@ class Swift_Transport_StreamBuffer
     {
     	$options['socket']['bindto']=$this->_params['sourceIp'].':0';
     }
+
+      $options['ssl']['verify_peer'] = sfConfig::get('app_ssl_verify_peer',TRUE);
+      $options['ssl']['verify_peer_name'] = sfConfig::get('app_ssl_verify_peer_name',TRUE);
+      $options['ssl']['allow_self_signed'] = sfConfig::get('app_ssl_allow_self_signed',FALSE);
+
+
     $this->_stream = @stream_socket_client($host.':'.$this->_params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, stream_context_create($options));
     if (false === $this->_stream)
     {
