@@ -20,7 +20,7 @@ class sfFileLogger extends sfLogger
 {
   protected
     $type       = 'symfony',
-    $format     = '%time% %type% [%priority%] %message%%EOL%',
+    $format     = '%time% %type% [%priority%] %message% [url:%url%] %EOL%',
     $timeFormat = '%b %d %H:%M:%S',
     $fp         = null;
 
@@ -98,6 +98,7 @@ class sfFileLogger extends sfLogger
       '%message%'  => $message,
       '%time%'     => strftime($this->timeFormat),
       '%priority%' => $this->getPriority($priority),
+      '%url%' => (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]",
       '%EOL%'      => PHP_EOL,
     )));
     flock($this->fp, LOCK_UN);
