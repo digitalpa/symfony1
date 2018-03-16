@@ -82,12 +82,24 @@ abstract class sfActions extends sfAction
     }
   }
 
-  public function sendJsonResponse(array $data)
+  public function sendJsonResponse($data)
   {
     $jsonData = json_encode($data);
 
     $this->getResponse()->setContentType('application/json');
     sfConfig::set('sf_web_debug', false);
     return $this->renderText($jsonData);
+  }
+
+  public function sendJsonString($json_string)
+  {
+    $check = json_decode($json_string);
+    if(false === $check){
+        throw new sfException("$json_string non è una stringa json");
+    }
+
+    $this->getResponse()->setContentType('application/json');
+    sfConfig::set('sf_web_debug', false);
+    return $this->renderText($json_string);
   }
 }
